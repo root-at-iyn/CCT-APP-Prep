@@ -1,6 +1,8 @@
 # Oracle RDBMS
 
 ## Derivation of version and patch information from hosts running Oracle software.
+### Oracle Database Pentesting
+- http://pentestdiary.blogspot.com/2017/08/oracle-database-penetration-testing.html
 
 ## Default Oracle accounts.
 

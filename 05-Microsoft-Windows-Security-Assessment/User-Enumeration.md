@@ -4,3 +4,6 @@
 ### - NetBIOS
 ### - SNMP
 ### - LDAP
+
+## Useful Links
+- Enuemrate Users and Groups: https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation#enumerate-users-and-groups
