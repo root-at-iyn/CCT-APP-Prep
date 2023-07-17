@@ -18,6 +18,7 @@ Can search for these in vulnerability databases:
 
 ### - Obtaining locally-stored clear-text passwords
 - Stealing Windows Credentials: https://book.hacktricks.xyz/windows-hardening/stealing-credentials
+- Finding Passwords in SYSVOL and Group Policy Preferences: https://adsecurity.org/?p=2288
 
 ### - Crack password hashes
 - https://book.hacktricks.xyz/generic-methodologies-and-resources/brute-force#ntlm-cracking
