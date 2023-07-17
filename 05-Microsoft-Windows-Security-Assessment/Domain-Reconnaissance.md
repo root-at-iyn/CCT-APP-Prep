@@ -21,3 +21,8 @@ From Pentestdairy: http://pentestdiary.blogspot.com/2017/08/crest-cct-applicatio
     - Requirement gradually phased out
     - Domain Controllers are often more obliging (200/2003).
     - net use \\ipaddress\ipc$ /u:"" ""
+- Domains
+    - net user /domain ---- a list of domain groups is returned
+    - net group /domain --- a list of domain groups is returned
+    - net user blabla /domain ---- details of the "blabla" user account are returned
+    - rundll32 dsquery,OpenQueryWindow ---- active directory searches
