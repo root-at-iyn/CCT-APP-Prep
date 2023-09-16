@@ -16,6 +16,7 @@
 ### - RC4
 Is a stream encryption cipher.
 ## Hashes
+Hashes are one way functions. They are used to provide integrity, 
 ### - SHA1
 ### - MD5
 
