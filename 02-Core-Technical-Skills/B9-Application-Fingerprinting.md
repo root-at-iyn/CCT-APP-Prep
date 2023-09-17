@@ -23,3 +23,10 @@ For more on banner grabbing, see [Multiple Ways to Banner Grabbing](https://www.
 
 ## Evaluation of responsive but unknown network applications.
 
+Enumeration unkown services is can be done via: 
+ - **Nmap**: If Nmap or other port scanning tool shows there is an open TCP/UDP port, you can try running a service scan with the `-V` argument. NMAP will send probes and try to identity the service based on signature patterns. 
+ - **Port Independent Detection**: Port Independent Detection is a technique of identifying network services by statistical analysis of the `protocol`, `session behaviour`, `packet sizes` and `payload data`. This technique is also used in Network Intrusion Detection Frameworks. For example, you can compare the IP `TTL`, `TCP Window Sizes` and responses to malformed packets.
+
+ - Ref: 
+    - https://www.icir.org/robin/papers/usenix06/
+    - https://www.netresec.com/?page=Blog&month=2015-10&post=Port-Independent-Protocol-Detection
