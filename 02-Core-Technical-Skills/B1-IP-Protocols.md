@@ -103,3 +103,100 @@ ff00::/8 | ff00:: | ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff | 2^120 | Global Int
 - UDP has no handshaking dialogues and thus exposes the user's program to any unreliability of the underlying network; there is no guarantee of delivery, ordering, or duplicate protection.
 
 ## ICMP
+
+ICMP is a part of the Internet Protocol suite (RFC 792). It can be used in response to IP operational errors or control / diagnostic purposes, e.g. determine if a networked host is alive. The main network utilities to implement ICMP is: 
+- Ping
+- Traceroute
+
+### Ping
+
+The ping utility is implemented using ICMP control messages `Echo Request` and `Echo Reply`. The typical flow is as follows:
+- **Echo Request:** An IP ICMP datagram is sent from the source host with:
+    - ICMP Type `8` (*Echo Request*)
+    - Time-To-Live (TTL)
+    - Idenitfier (Unique for every ping on most Linux systems, but fixed on Windows systems)
+    - Sequence Number (+1 from the identifier, incrementing with every request within that process)
+- **Echo Reply:** An IP ICMP datagram is sent from the destination host with:
+    - ICMP Type `0` (*Echo Reply*)
+    - TTL
+    - Sequence Number
+    - Idenitifier (*Identifier and sequence number can be used to associate each echo request with its reply*)
+    - Payload (*Containing the payload of the orginal request*)
+
+#### Security Considerations
+- **Denial of Service (DoS):** Systems that implement and process ICMP echo-requests are succeptible to `ping-flood` attacks, where an attacker sends a large number of ICMP `Echo Requests` in attempt to consume all the resources on a host.
+- **Host Discovery:** An attacker can use a technique known as `ping sweeps` to discover available hosts on a netowrk. This can be done using `Echo Requests` or other ICMP control message types.
+
+### Traceroute
+
+The traceroute utility, similar to the Windows based `PathPing` command, tries to map the availability of hosts within the netwrk path, between a source host and its target destination. Traceroute's behaviour is different depending in its OS implementation:
+- **Windows:**
+    - Traceroute sends `ICMP Echo Request` (*Type 8*) messages
+    - Determines a destination is reached by receiving an `ICMP Echo Reply` (*Type 0*) message
+- ***nix:**
+    - Traceroute sends `UDP` packets to destination port range **33434 - 33534** 
+    - Determines a destination is reached by receiving an `ICMP Destination Unreachable` (*Type 3*) message
+
+#### How Traceroute Works
+
+Traceroute sends packets with TTLs that gradually increase in size *(+1)* after receiving a response from a hop in the network. Where the ping utility only receives an Echo Reply from the target destination, the traceroute utility works differently. *Traceroute obtains a response from each hop in the network path to the target destination.*
+
+A typical flow is as follows: 
+1. Source host sends ICMP Echo Request or UDP packet with a `TTL` value of `1` to the target destination.
+2. The first hop in the path receives the packet and decrements the `TTL` value to `0`. As the TTL is now `0`, this hop in the path sends an `ICMP Time Exceeded` *(Type 11)* message back to the source host. This confirms the hop is alive and responded correctly to the TTL constraints of the IP protocol.
+3. The source host sends another ICMP/UDP packet with an increased `TTL` value of `2` to the target destination.
+4. This time the first hop receives the packet, decrements the `TTL` by `1`, making the `TTL` value `1` now. Since the TTL is 1, the hop forwards the ICMP/UDP packet on to the next hop in the path.
+5. The next hop in the path receives the packet and decrements the `TTL` value by `1`, which now becomes `0`. As it is zero it sends the `ICMP Time Exceeded` *(Type 11)* message back to the source host.
+6. The source continues to send ICMP/UDP packets with increasing `TTL` values until the destination sends an `Echo Reply` or `Destination Unreachable` ICMP message.
+
+
+#### ICMP Control Messages
+
+|Type|Code|Message|
+|----|----|--------|
+|**(0) Echo Reply**|**0**|**Echo Reply**|
+|(1-2)||Reserved
+|(3) Destination Unreachable|0|Destination network unreachable|
+|**(3) Destination Unreachable**|**1**|**Destination host unreachable**|
+|(3) Destination Unreachable|2|Destination protocol unreachable|
+|(3) Destination Unreachable|3|Destination port unreachable|
+|(3) Destination Unreachable|4|Fragmentation required, and DF flag set|
+|(3) Destination Unreachable|5|Source route failed|
+|(3) Destination Unreachable|6|Destination network unknown|
+|(3) Destination Unreachable|7|Destination host unknown|
+|(3) Destination Unreachable|8|Source host isolated|
+|(3) Destination Unreachable|9|Network administratively prohibited|
+|(3) Destination Unreachable|10|Host administratively prohibited|
+|(3) Destination Unreachable|11|Network unreachable for ToS|
+|(3) Destination Unreachable|12|Host unreachable for ToS|
+|(3) Destination Unreachable|13|Communication administratively prohibited|
+|(3) Destination Unreachable|14|Host Precedence Violation|
+|(3) Destination Unreachable|15|Precedence cutoff in effect|
+|(4) Source Quench|0|Source quench (congestion control) :exclamation: *deprecated*|
+|(5) Redirect Message|0|Redirect Datagram for the Network|
+|(5) Redirect Message|1|Redirect Datagram for the Host|
+|(5) Redirect Message|2|Redirect Datagram for the ToS & Network|
+|(5) Redirect Message|3|Redirect Datagram for the ToS & Host|
+|(6) ||Alternate Host Address :exclamation: *deprecated*|
+|(7) ||Reserved|
+|**(8) Echo Request**|**0**|**Echo Reply**|
+|(9) Router Advertisement|0|Router Advertisement|
+|(10) Router Solicitation|0|Router discovery / selection / solicitation
+|**(11) Time Exceeded**|**0**|**TTL expired in transit**|
+|(11) Time Exceeded|1|Fragment reassembly time exceeded|
+|(12) Parameter Problem: Bad IP Header|0|Pointer indicates the error|
+|(12) Parameter Problem: Bad IP Header|1|Missing required option|
+|(12) Parameter Problem: Bad IP Header|2|Bad length|
+|**(13) Timestamp**|**0**|**Timestamp** *(used for time synchronization)*|
+|(14) Timestamp Reply|0|Timestamp Reply|
+|(15) Information Request|0|Information Request :exclamation: *deprecated*|
+|(16) Information Reply|0|Information Reply :exclamation: *deprecated*|
+|(17) Address Mask Request|0|Address Mask Request :exclamation: *deprecated*|
+|(18) Address Mask Reply|0|Address Mask Reply :exclamation: *deprecated*|
+|(30) Traceroute|0|Information Request :exclamation: *deprecated*|
+|(42) Extended Echo Request|0|Request Extended Echo (XPing)|
+|(43) Extended Echo Request|0|No Error|
+|(43) Extended Echo Request|1|Malformed Query|
+|(43) Extended Echo Request|2|No Such Interface|
+|(43) Extended Echo Request|3|No Such Table Entry|
+|(43) Extended Echo Request|4|Multiple Interfaces Satisfy Query|
