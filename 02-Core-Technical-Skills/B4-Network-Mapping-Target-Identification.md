@@ -103,7 +103,7 @@ Comment:        This IP address range is not registered in the ARIN database.
 
 ## Network sweeping techniques to prioritise a target list and the potential for false negatives.
 
-Ping sweeps are often used to determine if a given host is alive. It can be useful to condense a large IP range down by selecting only the hosts confirmed to be active, for further targeted port scanning. The idea is to same time by not port scanning a host that is down.
+Ping sweeps are often used to determine if a given host is alive. It can be useful to condense a large IP range down by selecting only the hosts confirmed to be active, for further targeted port scanning. The idea is to save time by not port scanning a host that is down.
 
 Ping sweeps can be done in a few ways:
 
