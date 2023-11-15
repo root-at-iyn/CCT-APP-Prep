@@ -27,7 +27,7 @@ There are two types of bulk ciphers:
 
 #### Stream Ciphers
 
-A stream cipher operates on **1 bit of data at a time**. The key in a stream cipher is used to generate pseudorandom bits *(keystream)* which is then XOR'd with the plaintext bits to encrypt it. The keystream is made up of a key which should remain secret **(128-bits or 256-bits)**, and a nonce which must be unique *(between 64-bits - 128-bits)*. The ciphertext is decrypted by XORing the ciphertext with the same keystream. RC4 (128 bit) is the most common stream cipher.
+A stream cipher operates on **1 byte of data at a time**. The key in a stream cipher is used to generate pseudorandom bits *(keystream)* which is then XOR'd with the plaintext bits to encrypt it. The keystream is made up of a key which should remain secret **(128-bits or 256-bits)**, and a nonce which must be unique *(between 64-bits - 128-bits)*. The ciphertext is decrypted by XORing the ciphertext with the same keystream. RC4 (128 bit) is the most common stream cipher.
 
 #### Block Ciphers
 
@@ -35,12 +35,13 @@ A block cipher operates on data in groups (or blocks) of bytes. Stream ciphers p
 
 Block ciphers can operate in cipher block chaining (CBC) mode. CBC mode means that each block depends on the proper encryption of the block before it. This interdependence ensures that a change to any of the plaintext bits will cause the final encrypted block to change in a way that cannot be predicted or counteracted without knowing the key to the block cipher.
 
-CBC mode requires an initial chaining vector (ICV or IV), which is used to prevent two identical text sequences from producing the same ciphertext when encrypted. The ICV is updated each time a block is encrypted; the result is an output chaining vector (OCV or OV). For contiguous data, the OCV is automatically used as the ICV for the next block of data. For discontiguous data, it is your responsibility to pass the OCV from the previous block of data as the ICV for the next block. The recipient of the final encrypted data needs the original ICV to decrypt the data. In most cases there is no need for the ICV to be secret, but it should never be reused with the same key. The size of the ICV is the same as the cipher block size (8 bytes for DES and TDES, 16 bytes for AES).
+CBC mode requires an initial chaining vector (ICV or IV), which is used to prevent two identical text sequences from producing the same ciphertext when encrypted. The IV is updated each time a block is encrypted; the result is an output chaining vector (OCV or OV). For contiguous data, the OCV is automatically used as the ICV for the next block of data. For discontiguous data, it is your responsibility to pass the OCV from the previous block of data as the IV for the next block. The recipient of the final encrypted data needs the original IV to decrypt the data. In most cases there is no need for the IV to be secret, but it should never be reused with the same key. The size of the IV is the same as the cipher block size (8 bytes for DES and TDES, 16 bytes for AES).
 
 ### Asymmetric Encryption
 
-- Also known as `public key encryption`, uses a key pair *(public key / private key)* where one key is used to `encrypt` data, and the other key is used to `decrypt` data.
-- RSA is an example of an asymmetric encryption algorithm
+- Also known as `public key encryption`, uses a key pair *(public key / private key)* where the public key is used to `encrypt` data, and the private key is used to `decrypt` data.
+- Since the public key is known and used to encrypt messages, asymmetric encryption can be attacked with *chosen plaintext attacks*.
+- RSA is an example of an asymmetric encryption algorithm.
 
 ## Encryption algorithms:
 ### - DES
@@ -82,7 +83,16 @@ CBC mode requires an initial chaining vector (ICV or IV), which is used to preve
 ### - RSA
 - RSA is an assymetric encyption algorithm, which uses a public / private key pair.
 ### - RC4
-Is a stream encryption cipher.
+- RC4 (Rivest Cipher 4) is a symmetric encryption algorithm which uses stream cipher encryption *(byte by byte transformation)*
+- RC4 relies on a secret key (between 8 - 2048-bits), and nonce to generate a keystream.
+- The internal state consists or 2 parts: 
+    1. A permutation of all 256 possible bytes
+    2. Two 8-bit index pointers
+    - The permutation is initialised with a `variable length key` typically between **40 and 2048 bits**, using the Key-Scheduling algorithm (KSA). After initialisation, the stream of bits is generated using `pseudo-random generation algorithm` (PRGA).
+    - Once initialised, given the initial state `S`, RC4 generates a keystream `KS` *(computed from `S`)* of the same length as the plaintext `P` to compute a ciphertext: *C = P* $\oplus$ *KS*
+    - For each byte in the paintext `P`, the internal state `S` is modifed so that `S[i]` and `S[j]` have their values swapped. If `i` and `j` are equal, then `S[i]` is not modified.
+- RC4 is implemented as a cipher option in `TLS` and the builtin cipher in `WEP`, with both containing serious implementation flaws, and are no longer considered secure. 
+
 ## Hashes
 Hashes are one way functions. They are used to provide integrity, 
 ### - SHA1
