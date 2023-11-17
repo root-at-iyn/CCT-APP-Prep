@@ -111,3 +111,20 @@ Ping sweeps can be done in a few ways:
 |----------|-----|-----|
 ICMP Ping| Quick results and likely to be accurate if a response is sent back| ICMP Pings are typically blocked, so there is the possibility a host marked as down, is not actually down.|
 |TCP/UDP Ping|More likely to not be blocked by firewalls.| Relies on a well known service/port being open, so could still present false negatives.
+
+### Ping sweeps
+
+#### Namp
+*Ping sweep (host discovery) with Nmap using ICMPv4 echo, timestamp, and subnet mask requests*
+```pwsh
+nmap -PEMP -sP -vvv -n 192.168.0.0/24
+```
+#### Ping
+*Ping sweep (ICMPv4 echo-request) by pinging Broadcast Address*
+```pwsh
+ping -b 10.10.5.255
+```
+*Ping sweep to broadcast address (255.255.255.255) to get response from all subnets*
+```pwsh
+ping -b 255.255.255.255
+```

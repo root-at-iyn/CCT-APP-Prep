@@ -83,7 +83,7 @@ CBC mode requires an initial chaining vector (ICV or IV), which is used to preve
 ### - RSA
 - RSA is an assymetric encyption algorithm, which uses a public / private key pair.
 ### - RC4
-- RC4 (Rivest Cipher 4) is a symmetric encryption algorithm which uses stream cipher encryption *(byte by byte transformation)*
+- RC4 (Rivest Cipher 4) is a symmetric encryption algorithm which uses **stream cipher encryption** *(byte by byte transformation)*
 - RC4 relies on a secret key (between 8 - 2048-bits), and nonce to generate a keystream.
 - The internal state consists or 2 parts: 
     1. A permutation of all 256 possible bytes

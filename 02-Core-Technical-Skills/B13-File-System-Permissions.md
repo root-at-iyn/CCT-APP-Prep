@@ -4,3 +4,5 @@
 
 ## Analysing registry ACLs.
 
+Ref: [Understanding Windows File And Registry Permissions](https://learn.microsoft.com/en-us/archive/msdn-magazine/2008/november/access-control-understanding-windows-file-and-registry-permissions)
+
