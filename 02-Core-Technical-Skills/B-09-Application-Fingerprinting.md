@@ -2,8 +2,11 @@
 
 ## Determining server types and network application versions from application banners.
 
-*From Wikapedia:*
->Banner grabbing is a technique used to gain information about a computer system on a network and the services running on its open ports. Administrators can use this to take inventory of the systems and services on their network. However, an intruder can use banner grabbing in order to find network hosts that are running versions of applications and operating systems with known exploits.
+*From PTES & Wikapedia*
+
+>Banner grabbing is the process of connecting to a specific port and examining data returned from the remote host to identify the service/application bound to that port. Often in the connection process, software will provide an identification string which may include information such as the name of the application, or information about which specific version of the software is running. 
+
+> Administrators can use this to take inventory of the systems and services on their network. However, an intruder can use banner grabbing in order to find network hosts that are running versions of applications and operating systems with known exploits.
 
 
 This can be done via multiple tools. An application framework or web server typically has its name a version within the banner if default configuration is unmodified. This may appear as;

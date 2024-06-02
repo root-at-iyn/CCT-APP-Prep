@@ -1,6 +1,30 @@
 # CCT APP Practical Component
 This section contains all of the skills that are assessed in the CREST CCT APP practical exam (>2024). It does not expand in detail on the learning material, and is only focused on the commands necessary to meet the objectives.
 
+*CREST mentions the following:*
+>The practical component tests candidates’ hands-on penetration testing methodology and skills against reference networks, hosts and applications.
+
+Since the exam the is focused on hands on penetration testing methodology, it is best to prepare your notes with how you would approach an actual Web Application Penetration Test. This includes:
+- Intelligence Gathering
+- Threat Modelling
+- Vulnerability Analysis
+- Exploitation
+- Post Exploitation
+
+**NOTE:** The Reporting skills are now assessed in the *Written Scenario* component of the written exam.
+
+## Commands
+In the exam you will need to know what commands to use to achieve an objective. It's important to remember, the focus is not just about the commands, it's about using the right commands for the right task, in the most efficient way. For example, if you need to verify whether a host is running a HTTP/HTTPS service, would you:
+-  run a TCP port scan for all ports?, 
+- or would you first run a port scan for common web ports?, 
+- or would you try banner grabbing on common web ports? 
+If the question indicates how much time should be given to that particular question, that should be considered before chosing how to meet that objective.
+
+The following is a general methodology that lists the commands and steps to perform aspects of a Web Application Penetration Test that are assesed in the exam. 
+
+- [Intelligence Gathering](./Intelligence-Gathering.md)
+- [Vulnerability Analysis](./Vulnerability-Analysis.md)
+
 ## Skills Assessed
 
 |ID |Skill ID|Skill |Details |
