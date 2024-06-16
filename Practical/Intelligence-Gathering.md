@@ -13,7 +13,9 @@
 ## Banner Grabbing
 
 ## Curl
-
+```
+curl -IL http://10.0.0.2
+```
 ## Wget
 
 ## Telnet
@@ -27,6 +29,14 @@
 ## Packet Capture
 
 ### Tcpdump
+*View bytes in hex and ASCII with segment size of 65535 (bytes)*
+```
+sudo tcpdump -i en0 -s 65535 -X
+```
+*Capture traffic on port 80 and Automatically decodes bytes to ASCII*
+```
+sudo tcpdump -i en0  -A port 80
+```
 
 ### Wireshark
 
